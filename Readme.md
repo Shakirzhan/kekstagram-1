@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Богдан Васкан](https://up.htmlacademy.ru/javascript/10/user/126100).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 
