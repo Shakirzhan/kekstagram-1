@@ -1,13 +1,16 @@
 'use strict';
-var uploadOverlay = document.querySelector('.upload-overlay');
-var galleryOverlay = document.querySelector('.gallery-overlay');
-var pictureTemplate = document.querySelector('#picture-template').content;
-var picturesLike = document.querySelector('.picture-likes');
-var picturesComments = document.querySelector('.picture-comments');
-var fragment = document.createDocumentFragment();
-var picturesNode = document.querySelector('.pictures');
 
-// galleryOverlay.classList.remove('hidden');
+var galleryOverlay = document.querySelector('.gallery-overlay');
+var galleryOverlayImage = document.querySelector('.gallery-overlay-image');
+var likesCount = document.querySelector('.likes-count');
+var commentsCount = document.querySelector('.comments-count');
+
+var picturesNode = document.querySelector('.pictures');
+var pictureTemplate = document.querySelector('#picture-template').content;
+var fragment = document.createDocumentFragment();
+
+
+galleryOverlay.classList.remove('hidden');
 
 var getRandomComment = function () {
   var comments = [
@@ -29,7 +32,7 @@ var getRandomInt = function (min, max) {
 var getData = function () {
   var pictures = [];
 
-  for (var i = 1; i <= 25; i++) {
+  for (var i = 1; i <= 26; i++) {
     var generateData = {
       url: 'photos/' + i + '.jpg',
       likes: getRandomInt(15, 200),
@@ -38,8 +41,10 @@ var getData = function () {
     pictures.push(generateData);
   }
   return pictures;
-
 };
+
+var arr = getData();
+
 var renderImg = function (img) {
   var imageElement = pictureTemplate.cloneNode(true);
   imageElement.querySelector('img').src = img.url;
@@ -48,7 +53,19 @@ var renderImg = function (img) {
 
   return imageElement;
 };
-for (var i = 0; i <= 25; i++) {
-  fragment.appendChild(renderImg(getData()));
-}
-picturesNode.appendChild(fragment);
+
+var renderGalleryImg = function (bigImg) {
+  galleryOverlayImage.src = bigImg.url;
+  likesCount.textContent = bigImg.likes;
+  commentsCount.textContent = bigImg.comments;
+};
+
+var appendNodes = function () {
+  for (var i = 0; i <= 25; i++) {
+    fragment.appendChild(renderImg(arr[i]));
+  }
+  picturesNode.appendChild(fragment);
+};
+
+appendNodes();
+galleryOverlay.appendChild(renderGalleryImg(arr[0]));
