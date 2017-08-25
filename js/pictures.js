@@ -11,22 +11,9 @@ var picturesContainer = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture-template').content;
 var fragment = document.createDocumentFragment();
 
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
-
-// проверка была ли нажата кнопка enter
-var isActivateEvent = function (evt) {
-  return evt.keyCode && evt.keyCode === ENTER_KEYCODE;
-};
-
-// проверка была ли нажата кнопка escape
-var isDeactivateEvent = function (evt) {
-  return evt.keyCode && evt.keyCode === ESC_KEYCODE;
-};
-
 // функция обработчик события для enter
 var onEnterOnKeydown = function (evt) {
-  if (isDeactivateEvent(evt)) {
+  if (window.utils.isDeactivateEvent(evt)) {
     closeGallery();
   }
 };
@@ -49,7 +36,7 @@ var onCloseGalleryClick = function () {
 
 // вешаем обработчик события на закрытие по нажатию на клавишу
 var onCloseGalleryOnKeydown = function (evt) {
-  if (isActivateEvent(evt)) {
+  if (window.utils.isActivateEvent(evt)) {
     closeGallery();
   }
 };
@@ -133,7 +120,7 @@ var onActiveGallryClick = function (evt) {
 
 // вешаем обработчик события на картинки по нажатию на enter
 var onActiveGallryOnKeydown = function (evt) {
-  if (isActivateEvent(evt)) {
+  if (window.utils.isActivateEvent(evt)) {
     activeGallery(evt);
   }
 };
