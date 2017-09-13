@@ -4,21 +4,15 @@
 // форма кадрирования
 var uploadOverlay = document.querySelector('.upload-overlay');
 
-// var uploadSelect = document.querySelector('#upload-select-image');
 var uploadImg = document.querySelector('.upload-image');
 var uploadCancel = document.querySelector('.upload-form-cancel');
 var uploadFile = document.querySelector('#upload-file');
 var commentArea = document.querySelector('.upload-form-description');
 var recizeControlFieldset = document.querySelector('.upload-resize-controls');
 var uploadHashrag = document.querySelector('.upload-form-hashtags');
+var uploadComment = document.querySelector('.upload-form-description');
 var STEP_OF_ZOOM = 25;
 
-// функция обработчик события для enter
-var onEnterOnKeydown = function (evt) {
-  if (window.utils.isDeactivateEvent(evt)) {
-    showImgLoader(evt);
-  }
-};
 
 var showImgLoader = function () {
   uploadFile.value = '';
@@ -33,11 +27,21 @@ var showImgLoader = function () {
 var onShowImgLoaderClick = function () {
   showImgLoader();
 };
+
 var onShowImgLoaderOnkeydown = function (evt) {
   if (window.utils.isActivateEvent(evt)) {
     showImgLoader(evt);
   }
 };
+
+// функция обработчик события для enter
+var onEnterKeydown = function (evt) {
+  if (window.utils.isDeactivateEvent(evt)) {
+    showImgLoader();
+  }
+};
+
+
 var showCroppForm = function () {
   // показываем форму кадрирования
   uploadOverlay.classList.remove('hidden');
@@ -45,12 +49,26 @@ var showCroppForm = function () {
   // скрываем форму загрузки изображения
   uploadImg.classList.add('hidden');
 
-  document.addEventListener('onkeydown', onEnterOnKeydown);
+  document.addEventListener('keydown', onEnterKeydown);
+
+  uploadComment.addEventListener('keydown', function (evt) {
+    if (window.utils.isDeactivateEvent(evt)) {
+      evt.stopPropagation();
+    }
+  });
 };
 
 var onShowCroppFormClick = function () {
   showCroppForm();
 };
+
+// var onShowCroppFormKeydown = function (evt) {
+//   var element = evt.target.classList.contains('upload-file') ? evt.target : evt.target.previousElementSibling;
+//   console.log(element);
+//   if (element && window.utils.isActivateEvent(evt)) {
+//     showCroppForm();
+//   }
+// };
 
 uploadHashrag.maxLength = 20;
 
@@ -60,8 +78,9 @@ commentArea.maxLength = 100;
 
 
 uploadCancel.addEventListener('click', onShowImgLoaderClick);
-uploadCancel.addEventListener('onkeydown', onShowImgLoaderOnkeydown);
+uploadCancel.addEventListener('keydown', onShowImgLoaderOnkeydown);
 uploadFile.addEventListener('change', onShowCroppFormClick);
+// uploadFile.addEventListener('keydown', onShowCroppFormKeydown);
 showImgLoader();
 
 window.filters();

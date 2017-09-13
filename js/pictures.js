@@ -8,8 +8,6 @@ var commentsCount = document.querySelector('.comments-count');
 
 
 var picturesContainer = document.querySelector('.pictures');
-var pictureTemplate = document.querySelector('#picture-template').content;
-var fragment = document.createDocumentFragment();
 
 // функция обработчик события для enter
 var onEnterOnKeydown = function (evt) {
@@ -21,7 +19,7 @@ var onEnterOnKeydown = function (evt) {
 // открываем галерею
 var openGallery = function () {
   galleryOverlay.classList.remove('hidden');
-  document.addEventListener('onkeydown', onEnterOnKeydown);
+  document.addEventListener('keydown', onEnterOnKeydown);
 };
 
 // закрываем галерею
@@ -77,57 +75,61 @@ var getData = function () {
   return pictures;
 };
 
+// открываем галерею с заполнеными даными
+var showGallery = function (evt, data) {
+  evt.preventDefault();
+  renderGalleryImg(data);
+  openGallery(evt.target);
+};
+
+var onOpenPictureClick = function (imgDataObj) {
+  return function (evt) {
+    showGallery(evt, imgDataObj);
+  };
+};
+
+var onOpenPictureKeydown = function (imgDataObj) {
+  return function (evt) {
+    if (window.utils.isActivateEvent(evt)) {
+      showGallery(evt, imgDataObj);
+    }
+  };
+};
+
 // рендерим картинки
-var renderImg = function (img) {
-  var imageElement = pictureTemplate.cloneNode(true);
-  imageElement.querySelector('img').src = img.url;
-  imageElement.querySelector('.picture-likes').textContent = img.likes;
-  imageElement.querySelector('.picture-comments').textContent = img.comments.length;
+var renderImg = function (dataObj) {
+  var elementToClone = window.utils.getTemplateClone('#picture-template', '.picture');
+  var imageElement = elementToClone.cloneNode(true);
+
+  imageElement.querySelector('img').src = dataObj.url;
+  imageElement.querySelector('.picture-likes').textContent = dataObj.likes;
+  imageElement.querySelector('.picture-comments').textContent = dataObj.comments.length;
+
+  imageElement.addEventListener('click', onOpenPictureClick(dataObj));
+  imageElement.addEventListener('keydown', onOpenPictureKeydown(dataObj));
 
   return imageElement;
 };
 
 // рендерим картинку для галереи
-var renderGalleryImg = function (bigImg) {
-  galleryOverlayImage.src = bigImg.url;
-  likesCount.textContent = bigImg.likes;
-  commentsCount.textContent = bigImg.comments;
+var renderGalleryImg = function (previewDataObj) {
+  galleryOverlayImage.src = previewDataObj.url;
+  likesCount.textContent = previewDataObj.likes;
+  commentsCount.textContent = previewDataObj.comments.length;
 };
 
 // сохраняем в переменую массив объектов
-var arr = getData();
+var arrMyData = getData();
 
 // добавляем в DOM картинки
-var appendNodess = function () {
+var appendNodes = function () {
+  var fragment = document.createDocumentFragment();
   for (var i = 0; i <= 25; i++) {
-    fragment.appendChild(renderImg(arr[i]));
+    fragment.appendChild(renderImg(arrMyData[i]));
   }
   picturesContainer.appendChild(fragment);
 };
 
-// ищем содержит ли элемент класс picture
-var activeGallery = function (evt) {
-  var currentElemnt = evt.target.classList.contains('picture') ? evt.target : evt.target.parentNode.previousElementSibling;
-  if (currentElemnt) {
-    openGallery(currentElemnt);
-  }
-};
-
-// вешаем обработчик события на картинки по клику
-var onActiveGallryClick = function (evt) {
-  activeGallery(evt);
-};
-
-// вешаем обработчик события на картинки по нажатию на enter
-var onActiveGallryOnKeydown = function (evt) {
-  if (window.utils.isActivateEvent(evt)) {
-    activeGallery(evt);
-  }
-};
-
-appendNodess();
-galleryOverlay.appendChild(renderGalleryImg(arr[0]));
-picturesContainer.addEventListener('click', onActiveGallryClick);
-picturesContainer.addEventListener('onkeydown', onActiveGallryOnKeydown);
+appendNodes();
 galleryClose.addEventListener('click', onCloseGalleryClick);
-galleryClose.addEventListener('onkeydown', onCloseGalleryOnKeydown);
+galleryClose.addEventListener('keydown', onCloseGalleryOnKeydown);
