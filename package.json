@@ -1,6 +1,6 @@
 {
-  "name": "kekstagram",
-  "version": "1.0.0",
+  "name": "Kekstagram",
+  "version": "0.1.0",
   "private": true,
   "description": "Личный проект «Кекстаграм» от HTML Academy",
   "author": "Богдан Васкан",
@@ -14,14 +14,23 @@
   "homepage": "https://github.com/htmlacademy-javascript/126100-kekstagram",
   "license": "MIT",
   "devDependencies": {
+    "browser-sync": "2.15.0",
+    "del": "^2.2.2",
     "eslint": "3.9.0",
-    "eslint-config-htmlacademy": "0.2.x"
+    "eslint-config-htmlacademy": "0.2.x",
+    "gulp": "3.9.1",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-plumber": "^1.1.0",
+    "gulp-uglify": "^2.1.2",
+    "run-sequence": "^1.2.2"
   },
   "dependencies": {},
   "scripts": {
-    "test": "eslint js/"
+    "test": "eslint js/",
+    "build": "gulp build",
+    "start": "npm run build && gulp serve"
   },
   "engines": {
-    "node": "^6.10"
+    "node": "^6.9"
   }
 }
