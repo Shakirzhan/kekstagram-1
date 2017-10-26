@@ -1,22 +1,21 @@
 'use strict';
-// ЭТОТ МОДУЛЬ ВЫЗЫВАЮ В МОДУЛЕ FORM.JS
 window.filters = (function () {
   var controlFilters = document.querySelector('.upload-effect-controls');
   var imgFilterPreview = document.querySelector('.effect-image-preview');
-  var ENTER_KEY_CODE = 13;
 
-  // проверка была ли нажата кнопка энтер
-  var isActivateEvent = function (evt) {
-    return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-  };
-
-  // применяем выбраный фильтр
+/**
+ * [применяем выбраный фильтр]
+ * @param  {[DOM]} currentFilterName [текущий дом элемент]
+ */
   var applyFilter = function (currentFilterName) {
     var currentFilter = 'effect-' + currentFilterName.value;
     imgFilterPreview.setAttribute('class', currentFilter);
   };
 
-  // через делегирование выбираем какой фильтр активен
+/**
+ * [через делегирование выбираем какой фильтр активен]
+ * @param  {[object]} evt [находим нужный элемент и передаем его в функцию applyFilter]
+ */
   var activeFilter = function (evt) {
     var currentElement = evt.target.classList.contains('upload-effect') ? evt.target : evt.target.parentNode.previousElementSibling;
     if (currentElement) {
@@ -31,7 +30,7 @@ window.filters = (function () {
 
   // вызываем обработчик события по клавитуре
   var onFilterKeydown = function (evt) {
-    if (isActivateEvent(evt)) {
+    if (window.utils.isActivateEvent(evt)) {
       activeFilter(evt);
     }
   };

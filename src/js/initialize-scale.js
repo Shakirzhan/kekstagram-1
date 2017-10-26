@@ -1,9 +1,18 @@
 'use strict';
-// ЭТОТ МОДУЛЬ ВЫЗЫВАЮ В МОДУЛЕ FORM.JS
+
+/**
+ * [Функция возращает другую функцию в глобальную область видимости]
+ * @return {[function]} [из замыкания возращаем функцию]
+ */
 window.controlScales = (function () {
   var imgFilterPreview = document.querySelector('.effect-image-preview');
   var resizeControlValue = document.querySelector('.upload-resize-controls-value');
 
+  /**
+   * [Функция описывает всю работу с увелечением\уменшением изображения]
+   * @param  {[DOM]} element [контейнер в котором, лежат кнопки + и -]
+   * @param  {[number]} step    [Шаг с котороым мы увелечением\уменшением изображения]
+   */
   var initializeScale = function (element, step) {
 
     // добавляем zoom изображению

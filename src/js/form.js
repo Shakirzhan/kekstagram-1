@@ -1,5 +1,4 @@
 'use strict';
-// module4-task2
 
 // форма кадрирования
 var uploadOverlay = document.querySelector('.upload-overlay');
@@ -13,14 +12,13 @@ var uploadHashrag = document.querySelector('.upload-form-hashtags');
 var uploadComment = document.querySelector('.upload-form-description');
 var STEP_OF_ZOOM = 25;
 
-
+/**
+ * [скрывает форму кадрирования и показывает форму  загрузки изображения]
+ */
 var showImgLoader = function () {
   uploadFile.value = '';
 
-  // скрываем форму кадрирования
   uploadOverlay.classList.add('hidden');
-
-  // показываем форму загрузки изображения
   uploadImg.classList.remove('hidden');
 };
 
@@ -28,25 +26,33 @@ var onShowImgLoaderClick = function () {
   showImgLoader();
 };
 
+/**
+ * [Вещаем обработчик события по клавиатуре]
+ * @param  {[object]} evt [передаем его в функцию показа формы загрузки]
+ */
 var onShowImgLoaderOnkeydown = function (evt) {
   if (window.utils.isActivateEvent(evt)) {
     showImgLoader(evt);
   }
 };
 
-// функция обработчик события для enter
+/**
+ * [функция обработчик события для enter]
+ * @param  {[object]} evt [передаем его в функцию показа формы загрузки]
+ */
 var onEnterKeydown = function (evt) {
   if (window.utils.isDeactivateEvent(evt)) {
     showImgLoader();
   }
 };
 
-
+/**
+ * [ показываем форму кадрирования & скрываем форму загрузки изображения]
+ * [Вешаем обработчик события на эскейп для закрытия окна]
+ * [отменяет закрытия окна по эскейп, когда фокус в комментарии]
+ */
 var showCroppForm = function () {
-  // показываем форму кадрирования
   uploadOverlay.classList.remove('hidden');
-
-  // скрываем форму загрузки изображения
   uploadImg.classList.add('hidden');
 
   document.addEventListener('keydown', onEnterKeydown);
@@ -62,17 +68,25 @@ var onShowCroppFormClick = function () {
   showCroppForm();
 };
 
+/**
+ * [Валидация поля хэш-тег]
+ * @type {Number}
+ */
 uploadHashrag.maxLength = 20;
 
+/**
+ * [Валидация поля для ввода комментариев]
+ */
 commentArea.required = true;
 commentArea.minLength = 30;
 commentArea.maxLength = 100;
 
-
+/**
+ * Обработчики событий
+ */
 uploadCancel.addEventListener('click', onShowImgLoaderClick);
 uploadCancel.addEventListener('keydown', onShowImgLoaderOnkeydown);
 uploadFile.addEventListener('change', onShowCroppFormClick);
 showImgLoader();
-
 window.filters();
 window.controlScales(recizeControlFieldset, STEP_OF_ZOOM);

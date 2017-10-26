@@ -16,13 +16,13 @@ var onEnterOnKeydown = function (evt) {
   }
 };
 
-// открываем галерею
+// открытия галереи
 var openGallery = function () {
   galleryOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onEnterOnKeydown);
 };
 
-// закрываем галерею
+// закрытия галерии
 var closeGallery = function () {
   galleryOverlay.classList.add('hidden');
 };
@@ -39,7 +39,10 @@ var onCloseGalleryOnKeydown = function (evt) {
   }
 };
 
-// получаем рандомный элемент массива
+/**
+ * [получаем случайный элемент массива]
+ * @return {[number]} [description]
+ */
 var getRandomComment = function () {
   var comments = [
     'Всё отлично!',
@@ -55,12 +58,20 @@ var getRandomComment = function () {
   return comments[randomElementIndex];
 };
 
-// получаем рандомное целое число
+/**
+ * [получаем рандомное целое число]
+ * @param  {[number]} min [минимальное число]
+ * @param  {[number]} max [Максимальное число]
+ * @return {[number]}     [случайное целое число]
+ */
 var getRandomInt = function (min, max) {
   return Math.round(min + Math.random() * (max - min + 1));
 };
 
-// собираем массив объектов
+/**
+ * [собирает массив объектов]
+ * @return {[object]} [возращает готовый объект с данными]
+ */
 var getData = function () {
   var pictures = [];
 
@@ -75,19 +86,25 @@ var getData = function () {
   return pictures;
 };
 
-// открываем галерею с заполнеными даными
+/**
+ * [открывает галерею с заполнеными даными]
+ * @param  {[evt]} evt  [evt объект]
+ * @param  {[object]} data [объект с данными]
+ */
 var showGallery = function (evt, data) {
   evt.preventDefault();
   renderGalleryImg(data);
   openGallery(evt.target);
 };
 
+// открывает галерею по клику
 var onOpenPictureClick = function (imgDataObj) {
   return function (evt) {
     showGallery(evt, imgDataObj);
   };
 };
 
+// открывает галерею по нажатию на энтер
 var onOpenPictureKeydown = function (imgDataObj) {
   return function (evt) {
     if (window.utils.isActivateEvent(evt)) {
@@ -96,7 +113,11 @@ var onOpenPictureKeydown = function (imgDataObj) {
   };
 };
 
-// рендерим картинки
+/**
+ * [рендерит картинки]
+ * @param  {[object]} dataObj [Объект с данными]
+ * @return {[DOM]}  [Возрзщает дом элемент с заполнеными данными]
+ */
 var renderImg = function (dataObj) {
   var elementToClone = window.utils.getTemplateClone('#picture-template', '.picture');
   var imageElement = elementToClone.cloneNode(true);
@@ -111,7 +132,10 @@ var renderImg = function (dataObj) {
   return imageElement;
 };
 
-// рендерим картинку для галереи
+/**
+ * [рендерит картинку для галереи]
+ * @param  {[object]} previewDataObj [объект с данными]
+ */
 var renderGalleryImg = function (previewDataObj) {
   galleryOverlayImage.src = previewDataObj.url;
   likesCount.textContent = previewDataObj.likes;
@@ -121,7 +145,9 @@ var renderGalleryImg = function (previewDataObj) {
 // сохраняем в переменую массив объектов
 var arrMyData = getData();
 
-// добавляем в DOM картинки
+/**
+ * [добавляет в DOM картинки. Оптимизиует добавления путем использования fragment]
+ */
 var appendNodes = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i <= 25; i++) {
