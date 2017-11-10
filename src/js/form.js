@@ -11,6 +11,9 @@
   var recizeControlFieldset = document.querySelector('.upload-resize-controls');
   var uploadHashrag = document.querySelector('.upload-form-hashtags');
   var uploadComment = document.querySelector('.upload-form-description');
+  var uploadLvlPin = document.querySelector('.upload-effect-level-pin');
+  var uploadLvlLine = document.querySelector('.upload-effect-level-line');
+  var uploadLvlValue = document.querySelector('.upload-effect-level-val');
   var STEP_OF_ZOOM = 25;
 
   /**
@@ -82,6 +85,52 @@
   commentArea.minLength = 30;
   commentArea.maxLength = 100;
 
+  uploadLvlPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var thumbCoords = getCoords(uploadLvlPin);
+    var shiftX = evt.pageX - thumbCoords.left;
+
+    var sliderCoords = getCoords(uploadLvlLine);
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var newLeft = moveEvt.pageX - shiftX - sliderCoords.left;
+
+      if (newLeft < 0) {
+        newLeft = 0;
+      }
+      var rightEdge = uploadLvlLine.offsetWidth - uploadLvlPin.offsetWidth;
+      if (newLeft > rightEdge) {
+        newLeft = rightEdge;
+      }
+
+      uploadLvlPin.style.left = newLeft + 'px';
+      uploadLvlValue.style.width = newLeft + 'px';
+
+    };
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+  uploadLvlPin.ondragstart = function () {
+    return false;
+  };
+  var getCoords = function (elem) {
+    var box = elem.getBoundingClientRect();
+
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
+  };
   /**
    * Обработчики событий
    */
